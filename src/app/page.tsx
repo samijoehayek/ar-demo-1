@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import { ModelExample, ModelExampleAnimations } from "@/components/canvas";
+import { ModelExampleAnimations } from "@/components/canvas";
 import { motion } from "framer-motion";
 import { slideIn } from "../utils/motion";
 

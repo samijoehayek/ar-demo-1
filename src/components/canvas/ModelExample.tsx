@@ -8,8 +8,7 @@ const Model = () => {
   const model = useGLTF("./ssdfsdfsfd.gltf");
   // Scene setup
   const scene = new THREE.Scene();
-  // Animation mixer
-  const mixer = new THREE.AnimationMixer(scene);
+
   return (
     <primitive
       object={model.scene}

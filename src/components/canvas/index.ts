@@ -1,3 +1,4 @@
 import ModelExample from "./ModelExample";
+import ModelExampleAnimations from "./ModelExampleAnimations";
 
-export { ModelExample };
+export { ModelExample, ModelExampleAnimations };

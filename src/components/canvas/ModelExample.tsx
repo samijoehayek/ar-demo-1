@@ -2,10 +2,14 @@ import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import CanvasLoader from "../Loader";
+import * as THREE from "three";
 
 const Model = () => {
-  const model = useGLTF("./ThreeDExample0.gltf");
-
+  const model = useGLTF("./ssdfsdfsfd.gltf");
+  // Scene setup
+  const scene = new THREE.Scene();
+  // Animation mixer
+  const mixer = new THREE.AnimationMixer(scene);
   return (
     <primitive
       object={model.scene}
@@ -24,7 +28,7 @@ const ModelExample = () => {
       dpr={[1, 1]}
       gl={{ preserveDrawingBuffer: true }}
       camera={{
-        fov: 40,
+        fov: 120,
         near: 0.1,
         far: 200,
         position: [0, 0, 10],

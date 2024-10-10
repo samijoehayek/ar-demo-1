@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import { ModelExample } from "@/components/canvas";
+import { ModelExample, ModelExampleAnimations } from "@/components/canvas";
 import { motion } from "framer-motion";
 import { slideIn } from "../utils/motion";
 
@@ -30,9 +30,9 @@ export default function Home() {
     <div>
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
-        className="xl:flex-1 xl:h-[1000px] md:h-[550px] h-[550px]"
+        className="xl:flex-1 xl:h-[250px] md:h-[250px] h-[250px]"
       >
-        <ModelExample />
+        <ModelExampleAnimations />
       </motion.div>
     </div>
   );

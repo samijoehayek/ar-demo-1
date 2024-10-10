@@ -2,12 +2,9 @@ import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import CanvasLoader from "../Loader";
-import * as THREE from "three";
 
 const Model = () => {
   const model = useGLTF("./ssdfsdfsfd.gltf");
-  // Scene setup
-  const scene = new THREE.Scene();
 
   return (
     <primitive

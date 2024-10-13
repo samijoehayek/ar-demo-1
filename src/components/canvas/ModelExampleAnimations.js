@@ -11,15 +11,18 @@ const ThreeScene = () => {
   useEffect(() => {
     // Scene setup
     const scene = new THREE.Scene();
+    scene.background = null;
+
     const camera = new THREE.PerspectiveCamera(
-      50,
+      40,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0); // Set clear color to transparent
     mountRef.current.appendChild(renderer.domElement);
 
     // Lighting
@@ -41,8 +44,9 @@ const ThreeScene = () => {
     // GLTF Loader
     const loader = new GLTFLoader();
     loader.load(
-      "./cristiano-ronaldo/ssdfsdfsfd.gltf", // Replace with your model path
+      "./cristiano-ronaldo/RonaldoAnimationGLTF.gltf", // Replace with your model path
       (gltf) => {
+        gltf.scene.position.y = -1;
         scene.add(gltf.scene);
 
         // Process animations

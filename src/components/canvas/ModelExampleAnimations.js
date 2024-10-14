@@ -11,7 +11,7 @@ const ThreeScene = () => {
   const [animationActions, setAnimationActions] = useState([]);
   const [currentAnimation, setCurrentAnimation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [setLoadingProgress] = useState(0);
 
   useEffect(() => {
     // Scene setup
@@ -94,6 +94,7 @@ const ThreeScene = () => {
         setIsLoading(false);
       },
       (xhr) => {
+        console.log(xhr);
         setLoadingProgress(Math.round(progress));
       },
       (error) => {

@@ -11,7 +11,8 @@ const ThreeScene = () => {
   const [animationActions, setAnimationActions] = useState([]);
   const [currentAnimation, setCurrentAnimation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [setLoadingProgress] = useState(0);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  console.log(loadingProgress);
 
   useEffect(() => {
     // Scene setup

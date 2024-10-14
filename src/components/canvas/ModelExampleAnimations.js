@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -149,7 +150,7 @@ const ThreeScene = () => {
   return (
     <div>
       <div ref={mountRef} />
-      {/* <div>
+      <div>
         <h3>Animations:</h3>
         {animationActions.map(({ name }) => (
           <button key={name} onClick={() => changeAnimation(name)}>
@@ -157,7 +158,7 @@ const ThreeScene = () => {
           </button>
         ))}
       </div>
-      <p>Current Animation: {currentAnimation}</p> */}
+      <p>Current Animation: {currentAnimation}</p>
     </div>
   );
 };

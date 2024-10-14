@@ -1,11 +1,13 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
+import { useProgress } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const ThreeScene = () => {
   const mountRef = useRef(null);
+  const { progress } = useProgress();
   const [animationActions, setAnimationActions] = useState([]);
   const [currentAnimation, setCurrentAnimation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,7 +94,6 @@ const ThreeScene = () => {
         setIsLoading(false);
       },
       (xhr) => {
-        const progress = (xhr.loaded / xhr.total) * 100;
         setLoadingProgress(Math.round(progress));
       },
       (error) => {
@@ -172,7 +173,7 @@ const ThreeScene = () => {
             fontSize: "24px",
           }}
         >
-          Loading... {loadingProgress}%
+          Loading... {Math.round(progress)}%
         </div>
       )}
       {!isLoading && (

@@ -8,6 +8,8 @@ const ThreeScene = () => {
   const mountRef = useRef(null);
   const [animationActions, setAnimationActions] = useState([]);
   const [currentAnimation, setCurrentAnimation] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
     // Scene setup
@@ -86,12 +88,16 @@ const ThreeScene = () => {
             setCurrentAnimation(actions[0].name);
           }
         }
+        // Set loading to false when the model is fully loaded
+        setIsLoading(false);
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        const progress = (xhr.loaded / xhr.total) * 100;
+        setLoadingProgress(Math.round(progress));
       },
       (error) => {
         console.error("An error happened", error);
+        setIsLoading(false);
       }
     );
 
@@ -148,17 +154,38 @@ const ThreeScene = () => {
   };
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <div ref={mountRef} />
-      <div>
-        <h3>Animations:</h3>
-        {animationActions.map(({ name }) => (
-          <button key={name} onClick={() => changeAnimation(name)}>
-            {name}
-          </button>
-        ))}
-      </div>
-      <p>Current Animation: {currentAnimation}</p>
+      {isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            color: "white",
+            fontSize: "24px",
+          }}
+        >
+          Loading... {loadingProgress}%
+        </div>
+      )}
+      {!isLoading && (
+        <div>
+          <h3>Animations:</h3>
+          {animationActions.map(({ name }) => (
+            <button key={name} onClick={() => changeAnimation(name)}>
+              {name}
+            </button>
+          ))}
+          <p>Current Animation: {currentAnimation}</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -11,32 +11,42 @@ const ThreeScene = () => {
   useEffect(() => {
     // Scene setup
     const scene = new THREE.Scene();
-    scene.background = null;
-
-    const camera = new THREE.PerspectiveCamera(
-      40,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0); // Set clear color to transparent
-    mountRef.current.appendChild(renderer.domElement);
+    scene.background = new THREE.Color(0xa0a0a0);
+    scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(0, 1, 0);
-    scene.add(directionalLight);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x8d8d8d, 3);
+    hemiLight.position.set(0, 20, 0);
+    scene.add(hemiLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+    dirLight.position.set(3, 10, 10);
+    dirLight.castShadow = true;
+    dirLight.shadow.camera.top = 2;
+    dirLight.shadow.camera.bottom = -2;
+    dirLight.shadow.camera.left = -2;
+    dirLight.shadow.camera.right = 2;
+    dirLight.shadow.camera.near = 0.1;
+    dirLight.shadow.camera.far = 40;
+    scene.add(dirLight);
+
+    // Mesh Settings
+    const mesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(100, 100),
+      new THREE.MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false })
+    );
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.receiveShadow = true;
+    scene.add(mesh);
 
     // Camera position
-    camera.position.z = 5;
-
-    // Controls
-    const controls = new OrbitControls(camera, renderer.domElement);
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      1,
+      100
+    );
+    camera.position.set(-3, 1, 4);
 
     // Animation mixer
     const mixer = new THREE.AnimationMixer(scene);
@@ -46,8 +56,19 @@ const ThreeScene = () => {
     loader.load(
       "./cristiano-ronaldo/RonaldoAnimationGLTF.gltf", // Replace with your model path
       (gltf) => {
-        gltf.scene.position.y = -1;
+        // Scene Settings
         scene.add(gltf.scene);
+
+        // Model Settings
+        const model = gltf.scene;
+        model.traverse((object) => {
+          if (object.isMesh) object.castShadow = true;
+        });
+
+        // Skeleton Settings
+        const skeleton = new THREE.SkeletonHelper(model);
+        skeleton.visible = false;
+        scene.add(skeleton);
 
         // Process animations
         const animations = gltf.animations;
@@ -72,6 +93,20 @@ const ThreeScene = () => {
         console.error("An error happened", error);
       }
     );
+
+    // Renderer Settings
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    mountRef.current.appendChild(renderer.domElement);
+
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.target.set(0, 1, 0);
+    controls.update();
 
     // Animation loop
     const clock = new THREE.Clock();
@@ -114,7 +149,7 @@ const ThreeScene = () => {
   return (
     <div>
       <div ref={mountRef} />
-      <div>
+      {/* <div>
         <h3>Animations:</h3>
         {animationActions.map(({ name }) => (
           <button key={name} onClick={() => changeAnimation(name)}>
@@ -122,7 +157,7 @@ const ThreeScene = () => {
           </button>
         ))}
       </div>
-      <p>Current Animation: {currentAnimation}</p>
+      <p>Current Animation: {currentAnimation}</p> */}
     </div>
   );
 };

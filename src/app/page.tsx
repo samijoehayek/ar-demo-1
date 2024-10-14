@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ModelExampleAnimations } from "@/components/canvas";
+import { ModelExampleAnimations, ThreeJSAnimation } from "@/components/canvas";
 import { motion } from "framer-motion";
 import { slideIn } from "../utils/motion";
 import BackgroundImage from "@/components/background-image/background-image";
@@ -27,10 +27,11 @@ export default function Home() {
 
   return (
     <div>
-      <BackgroundImage imageName={mobile ? "bg-image-mobile" : "bg-image"} />
-      <motion.div variants={slideIn("right", "tween", 0.2, 1)}>
-        <ModelExampleAnimations />
-      </motion.div>
+      {/* <BackgroundImage imageName={mobile ? "bg-image-mobile" : "bg-image"} /> */}
+      {/* <motion.div variants={slideIn("right", "tween", 0.2, 1)}> */}
+      <ModelExampleAnimations />
+      {/* <ThreeJSAnimation /> */}
+      {/* </motion.div> */}
     </div>
   );
 }

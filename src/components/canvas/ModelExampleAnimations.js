@@ -11,7 +11,7 @@ const ThreeScene = () => {
   const [animationActions, setAnimationActions] = useState([]);
   const [currentAnimation, setCurrentAnimation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
     // Scene setup
@@ -93,9 +93,9 @@ const ThreeScene = () => {
         // Set loading to false when the model is fully loaded
         setIsLoading(false);
       },
-      // (xhr) => {
-      //   setLoadingProgress(Math.round(progress));
-      // },
+      (xhr) => {
+        setLoadingProgress(Math.round(progress));
+      },
       (error) => {
         console.error("An error happened", error);
         setIsLoading(false);

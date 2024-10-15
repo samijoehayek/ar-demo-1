@@ -4,6 +4,7 @@ import { useProgress } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import LoaderMT from "../loader/LoaderMT";
 
 const ThreeScene = () => {
   const mountRef = useRef(null);
@@ -159,36 +160,24 @@ const ThreeScene = () => {
   return (
     <div style={{ position: "relative" }}>
       <div ref={mountRef} />
-      {isLoading && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            color: "white",
-            fontSize: "24px",
-          }}
-        >
-          Loading... {Math.round(progress)}%
+      {isLoading && <LoaderMT progress={progress} />}
+      {/* {!isLoading && (
+        <div className="absolute top-4 left-4 bg-white p-4 rounded shadow">
+          <h3 className="text-lg font-bold mb-2">Animations:</h3>
+          <div className="flex flex-wrap gap-2">
+            {animationActions.map(({ name }) => (
+              <button
+                key={name}
+                onClick={() => changeAnimation(name)}
+                className="px-3 py-1 bg-blue-500 text-black rounded hover:bg-blue-600 transition-colors"
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2">Current Animation: {currentAnimation}</p>
         </div>
-      )}
-      {!isLoading && (
-        <div>
-          <h3>Animations:</h3>
-          {animationActions.map(({ name }) => (
-            <button key={name} onClick={() => changeAnimation(name)}>
-              {name}
-            </button>
-          ))}
-          <p>Current Animation: {currentAnimation}</p>
-        </div>
-      )}
+      )} */}
     </div>
   );
 };

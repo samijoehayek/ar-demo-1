@@ -9,8 +9,8 @@ import LoaderMT from "../loader/LoaderMT";
 const ThreeScene = () => {
   const mountRef = useRef(null);
   const { progress } = useProgress();
-  const [animationActions, setAnimationActions] = useState([]);
-  const [currentAnimation, setCurrentAnimation] = useState(null);
+  // const [animationActions, setAnimationActions] = useState([]);
+  // const [currentAnimation, setCurrentAnimation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   console.log(loadingProgress);
@@ -84,12 +84,12 @@ const ThreeScene = () => {
             const action = mixer.clipAction(animation);
             return { name: animation.name, action };
           });
-          setAnimationActions(actions);
+          // setAnimationActions(actions);
 
           // Start the first animation by default
           if (actions.length > 0) {
             actions[0].action.play();
-            setCurrentAnimation(actions[0].name);
+            // setCurrentAnimation(actions[0].name);
           }
         }
         // Set loading to false when the model is fully loaded
@@ -146,16 +146,16 @@ const ThreeScene = () => {
   }, []);
 
   // Function to change animation
-  const changeAnimation = (animationName) => {
-    animationActions.forEach(({ name, action }) => {
-      if (name === animationName) {
-        action.play();
-        setCurrentAnimation(name);
-      } else {
-        action.stop();
-      }
-    });
-  };
+  // const changeAnimation = (animationName) => {
+  //   animationActions.forEach(({ name, action }) => {
+  //     if (name === animationName) {
+  //       action.play();
+  //       // setCurrentAnimation(name);
+  //     } else {
+  //       action.stop();
+  //     }
+  //   });
+  // };
 
   return (
     <div style={{ position: "relative" }}>

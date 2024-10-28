@@ -5,6 +5,9 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import LoaderMT from "../loader/LoaderMT";
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass';
 
 const ThreeScene = () => {
   const mountRef = useRef(null);
@@ -20,6 +23,33 @@ const ThreeScene = () => {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xa0a0a0);
     scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
+
+    // Camera position
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      1,
+      100
+    );
+    camera.position.set(-3, 1, 4);
+
+    // Renderer Settings
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    mountRef.current.appendChild(renderer.domElement);
+
+    // Post-processing setup
+    const composer = new EffectComposer(renderer);
+
+    // Add standard render pass
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    // Add afterimage pass for motion blur effect
+    const afterimagePass = new AfterimagePass(0.3); // Value between 0 and 1
+    composer.addPass(afterimagePass);
 
     // Lighting
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0x8d8d8d, 3);
@@ -46,22 +76,13 @@ const ThreeScene = () => {
     mesh.receiveShadow = true;
     scene.add(mesh);
 
-    // Camera position
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      1,
-      100
-    );
-    camera.position.set(-3, 1, 4);
-
     // Animation mixer
     const mixer = new THREE.AnimationMixer(scene);
 
     // GLTF Loader
     const loader = new GLTFLoader();
     loader.load(
-      "./cristiano-ronaldo/RonaldoAnimationGLTF.gltf", // Replace with your model path
+      "./cristiano-ronaldo-2/ronaldo_Animation.gltf", // Replace with your model path
       (gltf) => {
         // Scene Settings
         scene.add(gltf.scene);
@@ -105,13 +126,6 @@ const ThreeScene = () => {
       }
     );
 
-    // Renderer Settings
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-    mountRef.current.appendChild(renderer.domElement);
-
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = false;
@@ -126,7 +140,8 @@ const ThreeScene = () => {
       const delta = clock.getDelta();
       mixer.update(delta);
       controls.update();
-      renderer.render(scene, camera);
+      composer.render();
+      // renderer.render(scene, camera);
     };
     animate();
 
